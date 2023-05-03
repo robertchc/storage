@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Slider Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed/dist/widget.js"></script>
+  </head>
+  <body>
+    <h1>Slider Example</h1>
+    <input type="range" min="0" max="100" value="50" class="slider" id="mySlider">
+    <p>Value: <span id="sliderValue"></span></p>
+    <p>Total: <span id="totalValue"></span></p>
+    <canvas id="gauge" width="200" height="200"></canvas>
+
+    <script>
+      // Get the slider and its value display element
+      const slider = document.getElementById("mySlider");
+      const sliderValue = document.getElementById("sliderValue");
+
+      // Get the total value display element
+      const totalValue = document.getElementById("totalValue");
+
+      // Get the gauge canvas element and its context
+      const gauge = document.getElementById("gauge");
+      const ctx = gauge.getContext("2d");
+
+      // Set the initial gauge value
+      const gaugeValue = 50;
+
+      // Update the gauge
+      function updateGauge(value) {
+        // Clear the canvas
+        ctx.clearRect(0, 0, gauge.width, gauge.height);
+
+        // Set the gauge color
+        ctx.fillStyle = "blue";
+
+        // Calculate the gauge angle based on the value
+        const gaugeAngle = value * Math.PI / 50;
+
+        // Draw the gauge arc
+        ctx.beginPath();
+        ctx.moveTo(gauge.width/2, gauge.height/2);
+        ctx.arc(gauge.width/2, gauge.height/2, gauge.width/2 - 10, -Math.PI/2, gaugeAngle - Math.PI/2, false);
+        ctx.lineTo(gauge.width/2, gauge.height/2);
+        ctx.fill();
+      }
+
+      // Update the slider value display and the total value
+      function updateValues() {
+        const sliderVal = slider.value;
+        sliderValue.innerText = sliderVal;
+        totalValue.innerText = sliderVal * 2;
+        updateGauge(sliderVal);
+      }
+
+      // Add event listener for slider input
+      slider.addEventListener("input", updateValues);
+
+      // Initialize the values
+      updateValues();
+    </script>
+  </body>
+</html>
